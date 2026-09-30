@@ -4,48 +4,96 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Invitation Anniversaire</title>
+
 <style>
-* { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-snap-type: y mandatory; }
-body { margin: 0; background: #050505; color: #f8f1df; font-family: Georgia, serif; overflow-x: hidden; }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-snap-type: y mandatory;
+}
+
+body {
+  margin: 0;
+  background: #050505;
+  color: #f8f1df;
+  font-family: Georgia, serif;
+  overflow-x: hidden;
+}
 
 /* Sections full-screen */
 section {
-  height: 100vh; height: 100svh;
-  display: flex; align-items: center; justify-content: center;
-  position: relative; overflow: hidden; scroll-snap-align: start;
+  height: 100vh;
+  height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  scroll-snap-align: start;
 }
 
 /* Image d'arrière-plan en grille 3x3 */
 .bg {
-  position: absolute; inset: 0;
+  position: absolute;
+  inset: 0;
   background-image: url('IMG_3331.jpeg');
   background-size: 300% 300%;
-  transform: scale(1.02); transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+  transform: scale(1.02);
+  transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
 }
-section.visible .bg { transform: scale(1); }
 
-.overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.3)); }
+section.visible .bg {
+  transform: scale(1);
+}
 
-.content { position: relative; z-index: 10; text-align: center; padding: 20px; width: 100%; max-width: 480px; }
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.1),
+    rgba(0,0,0,0.3)
+  );
+}
 
-/* Bouton "OUVRE-MOI" fin, élégant et discret placé sous le sceau */
+.content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 20px;
+  width: 100%;
+  max-width: 480px;
+}
+
+/* OUVRE-MOI : texte uniquement */
 .btn-discret {
-  background: none;
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
   border: none;
+  outline: none;
+  box-shadow: none;
+
   color: #f1d388;
   font-family: Georgia, serif;
   font-size: 11px;
   letter-spacing: 0.25em;
   text-transform: uppercase;
   cursor: pointer;
+
   padding: 8px 16px;
   margin-top: 45px;
+
   opacity: 0.9;
   transition: opacity 0.3s ease, transform 0.3s ease;
+
   text-shadow: 0 2px 4px rgba(0,0,0,0.8);
   -webkit-tap-highlight-color: transparent;
 }
+
 .btn-discret:active {
   opacity: 1;
   transform: scale(0.95);
@@ -53,105 +101,208 @@ section.visible .bg { transform: scale(1); }
 
 /* Boutons classiques */
 .btn {
-  display: inline-block; color: #f1d388; border: 1px solid #c59b27; background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(5px); border-radius: 30px; padding: 12px 28px; text-decoration: none;
-  letter-spacing: 0.15em; text-transform: uppercase; font-size: 11px; cursor: pointer;
-  transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  display: inline-block;
+  color: #f1d388;
+  border: 1px solid #c59b27;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  border-radius: 30px;
+  padding: 12px 28px;
+  text-decoration: none;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  font-size: 11px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
 }
-.btn:hover { background: #c59b27; color: #000; }
+
+.btn:hover {
+  background: #c59b27;
+  color: #000;
+}
 
 .scroll {
-  position: absolute; bottom: 25px; z-index: 3; color: #e0b65b; font-size: 10px;
-  letter-spacing: 0.2em; text-transform: uppercase; animation: bob 1.8s infinite; text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+  position: absolute;
+  bottom: 25px;
+  z-index: 3;
+  color: #e0b65b;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  animation: bob 1.8s infinite;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
 }
-@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+
+@keyframes bob {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(6px);
+  }
+}
 </style>
 </head>
+
 <body>
 
-<!-- Audio préchargé -->
-<audio id="bgMusic" src="Copy_74F466DB-694A-4482-8035-ED20F8B0A929-192kbps.mp3" preload="auto" playsinline loop></audio>
+<!-- Musique -->
+<audio
+  id="bgMusic"
+  src="IMG/copy_74F466DB-694A-4482-8035-ED20F8B0A929-192kbps.mp3"
+  preload="auto"
+  playsinline
+  loop>
+</audio>
 
 <main id="app"></main>
 
 <script>
+
 const gridPositions = [
-  "0% 0%",   "50% 0%",   "100% 0%",
-  "0% 50%",  "50% 50%",  "100% 50%",
-  "0% 100%", "50% 100%", "100% 100%"
+  "0% 0%",
+  "50% 0%",
+  "100% 0%",
+  "0% 50%",
+  "50% 50%",
+  "100% 50%",
+  "0% 100%",
+  "50% 100%",
+  "100% 100%"
 ];
 
 const app = document.getElementById('app');
 
 gridPositions.forEach((pos, index) => {
-  const id = index + 1;
-  const section = document.createElement('section');
-  if (id === 1) section.classList.add('visible');
 
-  let innerHTML = '';
+  const id = index + 1;
+
+  const section = document.createElement('section');
+
   if (id === 1) {
-    innerHTML = `
-      <div class="content">
-        <button class="btn-discret" onclick="openInvite()">OUVRE-MOI</button>
-      </div>`;
-  } else if (id === 5) {
-    innerHTML = `
-      <div class="content" style="margin-top: 120px;">
-        <a href="https://maps.google.com/?q=Restaurant+Le+Coq+Noir+92+boulevard+Victor+Hugo+92110+Clichy" target="_blank" class="btn">📍 Voir l'itinéraire</a>
-      </div>`;
-  } else if (id === 9) {
-    innerHTML = `
-      <div class="content">
-        <a href="mailto:contact@julieadawa.com?subject=Confirmation%20Presence%20Anniversaire" class="btn">Confirmer ma présence</a>
-      </div>`;
+    section.classList.add('visible');
   }
 
-  const scrollIndicator = id < 9 ? '<div class="scroll">∨ scrollez-moi ∨</div>' : '';
+  let innerHTML = '';
+
+  /* PREMIÈRE PAGE */
+  if (id === 1) {
+
+    innerHTML = `
+      <div class="content">
+        <button
+          type="button"
+          class="btn-discret"
+          onclick="openInvite()">
+          OUVRE-MOI
+        </button>
+      </div>
+    `;
+
+  /* PAGE 5 : ITINÉRAIRE */
+  } else if (id === 5) {
+
+    innerHTML = `
+      <div class="content" style="margin-top: 120px;">
+        <a
+          href="https://maps.google.com/?q=Restaurant+Le+Coq+Noir+92+boulevard+Victor+Hugo+92110+Clichy"
+          target="_blank"
+          class="btn">
+          📍 Voir l'itinéraire
+        </a>
+      </div>
+    `;
+
+  /* PAGE 9 : CONFIRMATION */
+  } else if (id === 9) {
+
+    innerHTML = `
+      <div class="content">
+        <a
+          href="mailto:contact@julieadawa.com?subject=Confirmation%20Presence%20Anniversaire"
+          class="btn">
+          Confirmer ma présence
+        </a>
+      </div>
+    `;
+  }
+
+  const scrollIndicator =
+    id < 9
+      ? '<div class="scroll">∨ scrollez-moi ∨</div>'
+      : '';
 
   section.innerHTML = `
-    <div class="bg" style="background-position: ${pos};"></div>
+    <div
+      class="bg"
+      style="background-position: ${pos};">
+    </div>
+
     <div class="overlay"></div>
+
     ${innerHTML}
+
     ${scrollIndicator}
   `;
 
   app.appendChild(section);
 });
 
-// Déblocage universel de la musique sur iPhone / Safari dès la première interaction
-function unlockAudio() {
-  const music = document.getElementById('bgMusic');
-  if (music) {
-    music.play().then(() => {
-      console.log("Audio activé");
-      document.removeEventListener('touchstart', unlockAudio);
-      document.removeEventListener('click', unlockAudio);
-    }).catch(() => {});
-  }
-}
-document.addEventListener('touchstart', unlockAudio, { once: true });
-document.addEventListener('click', unlockAudio, { once: true });
 
+/* OUVRE-MOI */
 function openInvite() {
+
   const music = document.getElementById('bgMusic');
+
+  /* Lance la musique après le clic de l'utilisateur */
   if (music) {
+
     music.volume = 1.0;
-    music.play().catch(err => console.log("Erreur audio :", err));
+
+    music.play().catch(error => {
+      console.log("Lecture audio bloquée :", error);
+    });
   }
 
-  /* Transition fluide vers la deuxième page */
-  setTimeout(() => {
-    document.querySelectorAll('section')[1].scrollIntoView({ behavior: 'smooth' });
-  }, 500);
+  /* Passage direct à la deuxième page */
+  const secondPage = document.querySelectorAll('section')[1];
+
+  if (secondPage) {
+
+    secondPage.scrollIntoView({
+      behavior: 'smooth',
+      block: 'start'
+    });
+  }
 }
 
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) entry.target.classList.add('visible');
-  });
-}, { threshold: 0.4 });
 
-document.querySelectorAll('section').forEach(sec => observer.observe(sec));
+/* Animation des images */
+const observer = new IntersectionObserver(
+  (entries) => {
+
+    entries.forEach(entry => {
+
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+
+    });
+
+  },
+  {
+    threshold: 0.4
+  }
+);
+
+
+/* Activation de l'observation */
+document.querySelectorAll('section').forEach(
+  sec => observer.observe(sec)
+);
+
 </script>
 
 </body>
