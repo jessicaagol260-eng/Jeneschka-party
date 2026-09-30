@@ -16,41 +16,28 @@ section {
   position: relative; overflow: hidden; scroll-snap-align: start;
 }
 
-/* Image d'arrière-plan */
+/* Grille 3x3 basée sur ton image d'origine IMG_3331.jpeg */
 .bg {
   position: absolute; inset: 0;
   background-image: url('IMG_3331.jpeg');
   background-size: 300% 300%;
-  transform: scale(1.03); transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+  transform: scale(1.02); transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
 }
 section.visible .bg { transform: scale(1); }
 
-.overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.5)); }
+.overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.4)); }
 
 .content { position: relative; z-index: 2; text-align: center; padding: 20px; width: 100%; max-width: 480px; }
 
-/* Animation & Style de l'Enveloppe */
-.envelope-container {
-  position: relative; width: min(80vw, 320px); height: 200px;
-  margin: 30px auto 20px; cursor: pointer; perspective: 1000px;
+/* Zone cliquable sur le premier panneau */
+.trigger-area {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  cursor: pointer;
 }
-.envelope { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.8s ease; }
-.env-body { position: absolute; inset: 0; border: 1px solid #c59b27; border-radius: 8px; background: linear-gradient(145deg, #1c1a17, #080808); box-shadow: 0 15px 35px rgba(0,0,0,0.8); }
-.flap {
-  position: absolute; top: 0; left: 0; right: 0; height: 100px; background: #221f1a;
-  clip-path: polygon(0 0, 100% 0, 50% 100%); transform-origin: top; transition: transform 0.6s ease 0.2s, z-index 0.2s;
-  z-index: 3; border-top: 1px solid #c59b27;
-}
-.seal {
-  position: absolute; top: 75px; left: 50%; transform: translateX(-50%); width: 50px; height: 50px;
-  border-radius: 50%; background: radial-gradient(circle, #e5be65, #996e1e); color: #111;
-  display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 18px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.6); z-index: 4; transition: opacity 0.4s ease, transform 0.4s ease;
-}
-.envelope-container.open .flap { transform: rotateX(180deg); z-index: 1; }
-.envelope-container.open .seal { opacity: 0; transform: translateX(-50%) scale(0.5); }
 
-/* Boutons */
+/* Boutons d'action */
 .btn {
   display: inline-block; color: #f1d388; border: 1px solid #c59b27; background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(5px); border-radius: 30px; padding: 12px 28px; text-decoration: none;
@@ -68,13 +55,13 @@ section.visible .bg { transform: scale(1); }
 </head>
 <body>
 
-<!-- Element audio personnalisé -->
-<audio id="bgMusic" src="Copy_74F466DB-694A-4482-8035-ED20F8B0A929-192kbps.mp3" loop></audio>
+<!-- Élément audio avec le nom exact de ton fichier MP3 -->
+<audio id="bgMusic" src="Copy_74F466DB-694A-4482-8035-ED20F8B0A929-192kbps.mp3" preload="auto" playsinline loop></audio>
 
 <main id="app"></main>
 
 <script>
-// Positions de la grille 3x3
+// Positions de la grille 3x3 pour découper l'image principale
 const gridPositions = [
   "0% 0%",   "50% 0%",   "100% 0%",
   "0% 50%",  "50% 50%",  "100% 50%",
@@ -90,17 +77,8 @@ gridPositions.forEach((pos, index) => {
 
   let innerHTML = '';
   if (id === 1) {
-    innerHTML = `
-      <div class="content">
-        <div class="envelope-container" id="envelopeContainer" onclick="openInvite()">
-          <div class="envelope">
-            <div class="env-body"></div>
-            <div class="flap"></div>
-            <div class="seal">M</div>
-          </div>
-        </div>
-        <button class="btn" onclick="openInvite()">Ouvre-moi</button>
-      </div>`;
+    /* Zone cliquable invisible sur toute la première section */
+    innerHTML = `<div class="trigger-area" onclick="openInvite()"></div>`;
   } else if (id === 5) {
     innerHTML = `
       <div class="content" style="margin-top: 120px;">
@@ -126,17 +104,18 @@ gridPositions.forEach((pos, index) => {
 });
 
 function openInvite() {
+  /* Lancement de l'audio */
   const music = document.getElementById('bgMusic');
-  if (music) music.play().catch(() => {});
+  if (music) {
+    music.volume = 1.0;
+    music.play().catch(err => console.log("Erreur audio :", err));
+  }
 
-  const container = document.getElementById('envelopeContainer');
-  if (container) container.classList.add('open');
-
-  setTimeout(() => {
-    document.querySelectorAll('section')[1].scrollIntoView({ behavior: 'smooth' });
-  }, 700);
+  /* Redirection fluide vers le panneau suivant */
+  document.querySelectorAll('section')[1].scrollIntoView({ behavior: 'smooth' });
 }
 
+/* Observer pour déclencher les animations de défilement */
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) entry.target.classList.add('visible');
