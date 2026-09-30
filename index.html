@@ -9,14 +9,14 @@
 html { scroll-behavior: smooth; scroll-snap-type: y mandatory; }
 body { margin: 0; background: #050505; color: #f8f1df; font-family: Georgia, serif; overflow-x: hidden; }
 
-/* Sections full-screen avec Snap Scroll */
+/* Sections full-screen */
 section {
   height: 100vh; height: 100svh;
   display: flex; align-items: center; justify-content: center;
   position: relative; overflow: hidden; scroll-snap-align: start;
 }
 
-/* Grille 3x3 basée sur ton image IMG_3331.jpeg */
+/* Image d'arrière-plan en grille 3x3 */
 .bg {
   position: absolute; inset: 0;
   background-image: url('IMG_3331.jpeg');
@@ -25,37 +25,30 @@ section {
 }
 section.visible .bg { transform: scale(1); }
 
-.overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.4)); }
+.overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.3)); }
 
 .content { position: relative; z-index: 10; text-align: center; padding: 20px; width: 100%; max-width: 480px; }
 
-/* Style du VRAI Bouton OUVRE-MOI cliquable */
-.btn-open {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
+/* Bouton "OUVRE-MOI" fin, élégant et discret placé sous le sceau */
+.btn-discret {
+  background: none;
+  border: none;
   color: #f1d388;
-  border: 1px solid #c59b27;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(8px);
-  border-radius: 30px;
-  padding: 14px 32px;
   font-family: Georgia, serif;
-  letter-spacing: 0.2em;
+  font-size: 11px;
+  letter-spacing: 0.25em;
   text-transform: uppercase;
-  font-size: 12px;
-  font-weight: bold;
   cursor: pointer;
-  box-shadow: 0 4px 20px rgba(197, 155, 39, 0.3);
-  transition: all 0.3s ease;
-  margin-top: 180px;
+  padding: 8px 16px;
+  margin-top: 45px;
+  opacity: 0.9;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
   -webkit-tap-highlight-color: transparent;
 }
-.btn-open:active {
+.btn-discret:active {
+  opacity: 1;
   transform: scale(0.95);
-  background: #c59b27;
-  color: #000;
 }
 
 /* Boutons classiques */
@@ -76,7 +69,7 @@ section.visible .bg { transform: scale(1); }
 </head>
 <body>
 
-<!-- Element Audio -->
+<!-- Audio préchargé -->
 <audio id="bgMusic" src="Copy_74F466DB-694A-4482-8035-ED20F8B0A929-192kbps.mp3" preload="auto" playsinline loop></audio>
 
 <main id="app"></main>
@@ -99,10 +92,7 @@ gridPositions.forEach((pos, index) => {
   if (id === 1) {
     innerHTML = `
       <div class="content">
-        <button class="btn-open" onclick="openInvite()">
-          OUVRE-MOI
-          <span style="font-size: 16px;">👆</span>
-        </button>
+        <button class="btn-discret" onclick="openInvite()">OUVRE-MOI</button>
       </div>`;
   } else if (id === 5) {
     innerHTML = `
@@ -128,20 +118,31 @@ gridPositions.forEach((pos, index) => {
   app.appendChild(section);
 });
 
+// Déblocage universel de la musique sur iPhone / Safari dès la première interaction
+function unlockAudio() {
+  const music = document.getElementById('bgMusic');
+  if (music) {
+    music.play().then(() => {
+      console.log("Audio activé");
+      document.removeEventListener('touchstart', unlockAudio);
+      document.removeEventListener('click', unlockAudio);
+    }).catch(() => {});
+  }
+}
+document.addEventListener('touchstart', unlockAudio, { once: true });
+document.addEventListener('click', unlockAudio, { once: true });
+
 function openInvite() {
-  // 1. Déclenchement impératif du son au toucher (contourne le blocage iOS Safari)
   const music = document.getElementById('bgMusic');
   if (music) {
     music.volume = 1.0;
-    music.play().then(() => {
-      console.log("Musique lancée !");
-    }).catch(err => console.log("Erreur de lecture audio :", err));
+    music.play().catch(err => console.log("Erreur audio :", err));
   }
 
-  // 2. Défilement automatique vers la suite du message
+  /* Transition fluide vers la deuxième page */
   setTimeout(() => {
     document.querySelectorAll('section')[1].scrollIntoView({ behavior: 'smooth' });
-  }, 300);
+  }, 500);
 }
 
 const observer = new IntersectionObserver((entries) => {
