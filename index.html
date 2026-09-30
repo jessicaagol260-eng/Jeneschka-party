@@ -16,7 +16,7 @@ section {
   position: relative; overflow: hidden; scroll-snap-align: start;
 }
 
-/* Grille 3x3 basée sur ton image d'origine IMG_3331.jpeg */
+/* Grille 3x3 basée sur ton image IMG_3331.jpeg */
 .bg {
   position: absolute; inset: 0;
   background-image: url('IMG_3331.jpeg');
@@ -27,17 +27,38 @@ section.visible .bg { transform: scale(1); }
 
 .overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.4)); }
 
-.content { position: relative; z-index: 2; text-align: center; padding: 20px; width: 100%; max-width: 480px; }
+.content { position: relative; z-index: 10; text-align: center; padding: 20px; width: 100%; max-width: 480px; }
 
-/* Zone cliquable sur le premier panneau */
-.trigger-area {
-  position: absolute;
-  inset: 0;
-  z-index: 10;
+/* Style du VRAI Bouton OUVRE-MOI cliquable */
+.btn-open {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: #f1d388;
+  border: 1px solid #c59b27;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  border-radius: 30px;
+  padding: 14px 32px;
+  font-family: Georgia, serif;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: bold;
   cursor: pointer;
+  box-shadow: 0 4px 20px rgba(197, 155, 39, 0.3);
+  transition: all 0.3s ease;
+  margin-top: 180px;
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-open:active {
+  transform: scale(0.95);
+  background: #c59b27;
+  color: #000;
 }
 
-/* Boutons d'action */
+/* Boutons classiques */
 .btn {
   display: inline-block; color: #f1d388; border: 1px solid #c59b27; background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(5px); border-radius: 30px; padding: 12px 28px; text-decoration: none;
@@ -55,13 +76,12 @@ section.visible .bg { transform: scale(1); }
 </head>
 <body>
 
-<!-- Élément audio avec le nom exact de ton fichier MP3 -->
+<!-- Element Audio -->
 <audio id="bgMusic" src="Copy_74F466DB-694A-4482-8035-ED20F8B0A929-192kbps.mp3" preload="auto" playsinline loop></audio>
 
 <main id="app"></main>
 
 <script>
-// Positions de la grille 3x3 pour découper l'image principale
 const gridPositions = [
   "0% 0%",   "50% 0%",   "100% 0%",
   "0% 50%",  "50% 50%",  "100% 50%",
@@ -77,8 +97,13 @@ gridPositions.forEach((pos, index) => {
 
   let innerHTML = '';
   if (id === 1) {
-    /* Zone cliquable invisible sur toute la première section */
-    innerHTML = `<div class="trigger-area" onclick="openInvite()"></div>`;
+    innerHTML = `
+      <div class="content">
+        <button class="btn-open" onclick="openInvite()">
+          OUVRE-MOI
+          <span style="font-size: 16px;">👆</span>
+        </button>
+      </div>`;
   } else if (id === 5) {
     innerHTML = `
       <div class="content" style="margin-top: 120px;">
@@ -104,18 +129,21 @@ gridPositions.forEach((pos, index) => {
 });
 
 function openInvite() {
-  /* Lancement de l'audio */
+  // 1. Déclenchement impératif du son au toucher (contourne le blocage iOS Safari)
   const music = document.getElementById('bgMusic');
   if (music) {
     music.volume = 1.0;
-    music.play().catch(err => console.log("Erreur audio :", err));
+    music.play().then(() => {
+      console.log("Musique lancée !");
+    }).catch(err => console.log("Erreur de lecture audio :", err));
   }
 
-  /* Redirection fluide vers le panneau suivant */
-  document.querySelectorAll('section')[1].scrollIntoView({ behavior: 'smooth' });
+  // 2. Défilement automatique vers la suite du message
+  setTimeout(() => {
+    document.querySelectorAll('section')[1].scrollIntoView({ behavior: 'smooth' });
+  }, 300);
 }
 
-/* Observer pour déclencher les animations de défilement */
 const observer = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) entry.target.classList.add('visible');
