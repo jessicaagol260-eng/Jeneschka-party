@@ -1,309 +1,82 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Invitation Anniversaire</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitation - Julie Adawa</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #0b0b0b;
+            color: #f0e6d2;
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
 
-<style>
-* {
-  box-sizing: border-box;
-}
+        .card-container {
+            background: #141414;
+            border: 1px solid #d4af37;
+            border-radius: 16px;
+            max-width: 420px;
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+        }
 
-html {
-  scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
-}
+        /* Carrousel à défilement horizontal sans doublon */
+        .carousel {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 10px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
 
-body {
-  margin: 0;
-  background: #050505;
-  color: #f8f1df;
-  font-family: Georgia, serif;
-  overflow-x: hidden;
-}
+        .carousel img {
+            width: 100%;
+            flex-shrink: 0;
+            scroll-snap-align: center;
+            border-radius: 8px;
+        }
 
-/* Sections full-screen */
-section {
-  height: 100vh;
-  height: 100svh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  overflow: hidden;
-  scroll-snap-align: start;
-}
+        .audio-card {
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 12px;
+            padding: 12px;
+        }
 
-/* Image d'arrière-plan en grille 3x3 */
-.bg {
-  position: absolute;
-  inset: 0;
-  background-image: url('IMG_3331.jpeg');
-  background-size: 300% 300%;
-  transform: scale(1.02);
-  transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
-}
-
-section.visible .bg {
-  transform: scale(1);
-}
-
-.overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,0.1),
-    rgba(0,0,0,0.3)
-  );
-}
-
-.content {
-  position: relative;
-  z-index: 10;
-  text-align: center;
-  padding: 20px;
-  width: 100%;
-  max-width: 480px;
-}
-
-/* OUVRE-MOI : texte uniquement */
-.btn-discret {
-  appearance: none;
-  -webkit-appearance: none;
-  background: transparent;
-  border: none;
-  outline: none;
-  box-shadow: none;
-
-  color: #f1d388;
-  font-family: Georgia, serif;
-  font-size: 11px;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  cursor: pointer;
-
-  padding: 8px 16px;
-  margin-top: 45px;
-
-  opacity: 0.9;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-
-  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-  -webkit-tap-highlight-color: transparent;
-}
-
-.btn-discret:active {
-  opacity: 1;
-  transform: scale(0.95);
-}
-
-/* Boutons classiques */
-.btn {
-  display: inline-block;
-  color: #f1d388;
-  border: 1px solid #c59b27;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(5px);
-  border-radius: 30px;
-  padding: 12px 28px;
-  text-decoration: none;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  font-size: 11px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-}
-
-.btn:hover {
-  background: #c59b27;
-  color: #000;
-}
-
-.scroll {
-  position: absolute;
-  bottom: 25px;
-  z-index: 3;
-  color: #e0b65b;
-  font-size: 10px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  animation: bob 1.8s infinite;
-  text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-}
-
-@keyframes bob {
-  0%, 100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(6px);
-  }
-}
-</style>
+        audio {
+            width: 100%;
+            filter: invert(0.9) hue-rotate(180deg);
+        }
+    </style>
 </head>
-
 <body>
 
-<!-- Musique -->
-<audio
-  id="bgMusic"
-  src="copy_74F466DB-694A-4482-8035-ED20F8B0A929-192kbps.mp3"
-  preload="auto"
-  playsinline
-  loop>
-</audio>
+    <div class="card-container">
+        <!-- Carrousel avec les visuels uniques -->
+        <div class="carousel">
+            <img src="page1.jpg" alt="Ouverture">
+            <img src="page2.jpg" alt="Invitation Julie Adawa">
+            <img src="page3.jpg" alt="Dress Code">
+            <img src="page4.jpg" alt="Date et Lieu">
+            <img src="page5.jpg" alt="Remerciements">
+        </div>
 
-<main id="app"></main>
-
-<script>
-
-const gridPositions = [
-  "0% 0%",
-  "50% 0%",
-  "100% 0%",
-  "0% 50%",
-  "50% 50%",
-  "100% 50%",
-  "0% 100%",
-  "50% 100%",
-  "100% 100%"
-];
-
-const app = document.getElementById('app');
-
-gridPositions.forEach((pos, index) => {
-
-  const id = index + 1;
-
-  const section = document.createElement('section');
-
-  if (id === 1) {
-    section.classList.add('visible');
-  }
-
-  let innerHTML = '';
-
-  /* PREMIÈRE PAGE */
-  if (id === 1) {
-
-    innerHTML = `
-      <div class="content">
-        <button
-          type="button"
-          class="btn-discret"
-          onclick="openInvite()">
-          OUVRE-MOI
-        </button>
-      </div>
-    `;
-
-  /* PAGE 5 : ITINÉRAIRE */
-  } else if (id === 5) {
-
-    innerHTML = `
-      <div class="content" style="margin-top: 120px;">
-        <a
-          href="https://maps.google.com/?q=Restaurant+Le+Coq+Noir+92+boulevard+Victor+Hugo+92110+Clichy"
-          target="_blank"
-          class="btn">
-          📍 Voir l'itinéraire
-        </a>
-      </div>
-    `;
-
-  /* PAGE 9 : CONFIRMATION */
-  } else if (id === 9) {
-
-    innerHTML = `
-      <div class="content">
-        <a
-          href="mailto:contact@julieadawa.com?subject=Confirmation%20Presence%20Anniversaire"
-          class="btn">
-          Confirmer ma présence
-        </a>
-      </div>
-    `;
-  }
-
-  const scrollIndicator =
-    id < 9
-      ? '<div class="scroll">∨ scrollez-moi ∨</div>'
-      : '';
-
-  section.innerHTML = `
-    <div
-      class="bg"
-      style="background-position: ${pos};">
+        <!-- Lecteur Audio -->
+        <div class="audio-card">
+            <audio controls autoplay loop>
+                <source src="Son birthday 2.mp3" type="audio/mpeg">
+            </audio>
+        </div>
     </div>
-
-    <div class="overlay"></div>
-
-    ${innerHTML}
-
-    ${scrollIndicator}
-  `;
-
-  app.appendChild(section);
-});
-
-
-/* OUVRE-MOI */
-function openInvite() {
-
-  const music = document.getElementById('bgMusic');
-
-  /* Lance la musique après le clic de l'utilisateur */
-  if (music) {
-
-    music.volume = 1.0;
-
-    music.play().catch(error => {
-      console.log("Lecture audio bloquée :", error);
-    });
-  }
-
-  /* Passage direct à la deuxième page */
-  const secondPage = document.querySelectorAll('section')[1];
-
-  if (secondPage) {
-
-    secondPage.scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
-    });
-  }
-}
-
-
-/* Animation des images */
-const observer = new IntersectionObserver(
-  (entries) => {
-
-    entries.forEach(entry => {
-
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
-
-    });
-
-  },
-  {
-    threshold: 0.4
-  }
-);
-
-
-/* Activation de l'observation */
-document.querySelectorAll('section').forEach(
-  sec => observer.observe(sec)
-);
-
-</script>
 
 </body>
 </html>
